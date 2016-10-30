@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Account;
+
 class IndexController extends BaseController
 {
 

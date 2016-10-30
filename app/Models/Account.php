@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use App\Helpers\Config;
 
@@ -9,6 +9,27 @@ class Account
 	public function __construct($data)
 	{
 		$this->data = $data;
+		$this->id = $data['id'];
+	}
+
+	public function getInstitution()
+	{
+		return $this->data['fiLoginDisplayName'];
+	}
+
+	public function getName()
+	{
+		return $this->data['userName'] ?: $this->data['name'];
+	}
+
+	public function getBalance()
+	{
+		return $this->data['value'];
+	}
+
+	public function getType()
+	{
+		return $this->data['accountType'];
 	}
 
 	public static function where($key, $value)
@@ -31,19 +52,26 @@ class Account
 		$cache = $config->paths->cache . '/accounts-' . md5($credentials->email) . '.json';
 
 		// If the cache is less than one hour old, reuse it
-		if ( file_exists($cache) && filemtime($cache) > ( time() - 60 * 60 ) ) {
-			$accounts = file_get_contents($cache);
+		if ( file_exists($cache) && filemtime($cache) > (time() - 60 * 60) ) {
+			$raw_accounts = file_get_contents($cache);
 		} else {
 			// Otherwise, the cache is stale and should be updated
-			$accounts = shell_exec($config->paths->mintapi . ' --accounts ' . $credentials->email . ' "' . $credentials->password . '" --session=' . $credentials->session);
-			file_put_contents($cache, $accounts, LOCK_EX);
+			$command = $config->paths->mintapi . ' --accounts ' . $credentials->email . ' "' . $credentials->password . '" --session=' . $credentials->session;
+			$raw_accounts = shell_exec($command);
+			file_put_contents($cache, $raw_accounts, LOCK_EX);
 		}
 
 		// Decode the accounts
-		$raw_accounts = json_decode($accounts, true);
+		$raw_accounts = json_decode($raw_accounts, true);
+
+		$accounts = [];
 
 		// Get our own Account objects
 		foreach ( $raw_accounts as $account ) {
+			// Filter out 'ignore' accounts
+			if ( $account['name'] === 'ignore' )
+				continue;
+
 			$accounts[] = new self($account);
 		}
 
@@ -73,7 +101,7 @@ class Account
 		// Loop through accounts
 		foreach ( Account::all() as $account ) {
 			// Skip "ignore" accounts
-			if ($account['userName'] === 'ignore')
+			if ($account->data['userName'] === 'ignore')
 				continue;
 
 			// Start with a fresh corpus
@@ -90,8 +118,8 @@ class Account
 
 			// Add each value to our corpus for this account
 			foreach ( $keys as $key ) {
-				if ( isset($account[$key]) )
-					$corpus[] = $account[$key];
+				if ( isset($account->data[$key]) )
+					$corpus[] = $account->data[$key];
 			}
 
 			// Remove duplicate words, punctuation, and lowercase it all
@@ -103,7 +131,7 @@ class Account
 			$corpus = strtolower($corpus);
 
 			// Add to the index
-			$index[$account['id']] = $corpus;
+			$index[$account->id] = $corpus;
 		}
 
 		// Return the full index

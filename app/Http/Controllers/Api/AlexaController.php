@@ -15,7 +15,7 @@ class AlexaController extends BaseController
 		$account = Account::search($keyword);
 
 		// Format the response
-		$response = [
+		$data = [
 			"response" => [
 				"outputSpeech" => [
 					"type" => "PlainText",
@@ -25,7 +25,7 @@ class AlexaController extends BaseController
 			],
 		];
 
-		return $response;
+		return $response->withJson($data);
 	}
 
 	/**
@@ -64,7 +64,7 @@ class AlexaController extends BaseController
 	 */
 	private function speakableName( $account )
 	{
-		return $account['userName'] ? $account['userName'] : $account['fiLoginDisplayName'] . ' ' . $account['yodleeName'];
+		return $account->data['userName'] ? $account->data['userName'] : $account->getInstitution() . ' ' . $account->data['yodleeName'];
 	}
 
 	/**
@@ -79,16 +79,17 @@ class AlexaController extends BaseController
 	private function speakableSentence( $account )
 	{
 		$name    = $this->speakableName($account);
-		$balance = $this->speakableBalance($account['currentBalance']);
+		$balance = $this->speakableBalance($account->data['currentBalance']);
+		$type    = $account->getType();
 
-		if ( $account['accountType'] === 'credit' || $account['accountType'] === 'loan' ) {
-			if ( $account['currentBalance'] == 0 ) {
+		if ( $type === 'credit' || $type === 'loan' ) {
+			if ( $account->data['currentBalance'] == 0 ) {
 				$content = "You owe nothing on your {$name} account.";
 			} else {
 				$content = "You owe {$balance} on your {$name} account.";
 			}
-		} else if ( $account['accountType'] === 'bank' ) {
-			if ( $account['currentBalance'] == 0 ) {
+		} else if ( $type === 'bank' ) {
+			if ( $account->data['currentBalance'] == 0 ) {
 				$content = "Your {$name} account is empty.";
 			} else {
 				$content = "Your {$name} account balance is {$balance}.";

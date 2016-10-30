@@ -1,7 +1,5 @@
-{% if account.name != 'ignore' %}
 <tr>
-	<td>{{account.fiLoginDisplayName}}</td>
-	<td>{{account.name}}</td>
-	<td class="text-right">{{account.value|number_format(2)}}</td>
+	<td>{{account.getInstitution}}</td>
+	<td>{{account.getName}}</td>
+	<td class="text-right">{{account.getBalance|number_format(2)}}</td>
 </tr>
-{% endif %}
