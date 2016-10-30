@@ -1,4 +1,7 @@
+{% if account.name != 'ignore' %}
 <tr>
-	<td>Name</td>
-	<td>$0.00</td>
+	<td>{{account.fiLoginDisplayName}}</td>
+	<td>{{account.name}}</td>
+	<td class="text-right">{{account.value|number_format(2)}}</td>
 </tr>
+{% endif %}

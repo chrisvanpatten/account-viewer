@@ -3,14 +3,14 @@
 {% block content %}
 <table class="table table-striped">
 	<thead>
+		<th>Institution</th>
 		<th>Account</th>
 		<th>Balance</th>
 	</thead>
 	<tbody>
+		{% for account in accounts %}
 		{% include 'partials/_account.html.twig' %}
-		{% include 'partials/_account.html.twig' %}
-		{% include 'partials/_account.html.twig' %}
-		{% include 'partials/_account.html.twig' %}
+		{% endfor %}
 	</tbody>
 </table>
 {% endblock %}
