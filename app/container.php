@@ -21,3 +21,13 @@ $container['view'] = function ( $c ) {
 	return $view;
 
 };
+
+$container['config'] = function ( $c ) {
+
+	$path   = dirname(__FILE__) . '/../config.json';
+	$config = file_get_contents($path);
+	$config = json_decode($config, true);
+
+	return $config;
+
+};

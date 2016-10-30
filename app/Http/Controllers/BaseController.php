@@ -9,7 +9,8 @@ class BaseController
 	{
 		$this->container = $container;
 
-		$this->view = $this->container['view'];
+		$this->view   = $this->container['view'];
+		$this->config = $this->container['config'];
 	}
 
 }

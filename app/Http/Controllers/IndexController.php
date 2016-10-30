@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client as Guzzle;
-
 class IndexController extends BaseController
 {
 
@@ -12,13 +10,9 @@ class IndexController extends BaseController
 	 */
 	public function get( $request, $response, $args )
 	{
-		$client = new Guzzle();
-
-		$remote = $client->get('https://alexa.chrisvanpatten.com/alexa-bookkeeper/alexa-bookkeeper.php');
-		$accounts = json_decode($remote->getBody(), true);
-
+		// Build the vars to pass to Twig
 		$vars = [
-			'accounts' => $accounts,
+			'accounts' => Account::all(),
 		];
 
 		return $this->view->render($response, 'pages/index.html.twig', $vars);

@@ -1,0 +1,18 @@
+{
+	"paths": {
+    "cache": "/path/to/cache/",
+    "mintapi": "/path/to/mintapi"
+  },
+  "accounts": [
+    {
+      "email": "",
+      "password": "",
+      "session": ""
+    },
+    {
+      "email": "",
+      "password": "",
+      "session": ""
+    }
+  ]
+}
