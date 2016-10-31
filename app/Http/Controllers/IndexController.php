@@ -6,7 +6,6 @@ use App\Account;
 
 class IndexController extends BaseController
 {
-
 	/**
 	 */
 	public function get( $request, $response, $args )
@@ -18,5 +17,4 @@ class IndexController extends BaseController
 
 		return $this->view->render($response, 'pages/index.html.twig', $vars);
 	}
-
 }

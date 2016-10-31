@@ -6,6 +6,8 @@ use App\Account;
 
 class AlexaController extends BaseController
 {
+	/**
+	 */
 	public function post( $request, $response, $args )
 	{
 		$body    = $request->getBody();

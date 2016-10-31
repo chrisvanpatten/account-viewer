@@ -11,10 +11,11 @@ class Account
 	public function __construct($data)
 	{
 		$this->data = $data;
-		$this->id = $data['id'];
+		$this->id   = $data['id'];
 	}
 
 	/**
+	 * @return string
 	 */
 	public function getInstitution()
 	{
@@ -22,6 +23,7 @@ class Account
 	}
 
 	/**
+	 * @return string
 	 */
 	public function getName()
 	{
@@ -29,6 +31,7 @@ class Account
 	}
 
 	/**
+	 * @return float
 	 */
 	public function getBalance()
 	{
@@ -36,6 +39,7 @@ class Account
 	}
 
 	/**
+	 * @return string
 	 */
 	public function getType()
 	{
@@ -43,6 +47,7 @@ class Account
 	}
 
 	/**
+	 * @return Account
 	 */
 	public static function where($key, $value)
 	{
@@ -57,6 +62,7 @@ class Account
 	}
 
 	/**
+	 * @return array
 	 */
 	public static function fetch($credentials)
 	{
@@ -94,6 +100,7 @@ class Account
 	}
 
 	/**
+	 * @return array
 	 */
 	public static function all()
 	{

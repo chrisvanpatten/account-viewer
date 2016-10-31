@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 class BaseController
 {
-
+	/**
+	 */
 	public function __construct( $container )
 	{
 		$this->container = $container;
@@ -12,5 +13,4 @@ class BaseController
 		$this->view   = $this->container['view'];
 		$this->config = $this->container['config'];
 	}
-
 }

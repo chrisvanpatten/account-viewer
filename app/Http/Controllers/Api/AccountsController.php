@@ -7,6 +7,8 @@ use App\Http\Controllers\BaseController;
 
 class AccountsController extends BaseController
 {
+	/**
+	 */
 	public function get( $request, $response, $args )
 	{
 		$accounts = Account::all();
