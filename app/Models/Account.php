@@ -6,32 +6,44 @@ use App\Helpers\Config;
 
 class Account
 {
+	/**
+	 */
 	public function __construct($data)
 	{
 		$this->data = $data;
 		$this->id = $data['id'];
 	}
 
+	/**
+	 */
 	public function getInstitution()
 	{
 		return $this->data['fiLoginDisplayName'];
 	}
 
+	/**
+	 */
 	public function getName()
 	{
 		return $this->data['userName'] ?: $this->data['name'];
 	}
 
+	/**
+	 */
 	public function getBalance()
 	{
 		return $this->data['value'];
 	}
 
+	/**
+	 */
 	public function getType()
 	{
 		return $this->data['accountType'];
 	}
 
+	/**
+	 */
 	public static function where($key, $value)
 	{
 		$accounts = Account::all();
@@ -41,9 +53,11 @@ class Account
 				return $account;
 		}
 
-		return [];
+		throw new Exception('Account not found.');
 	}
 
+	/**
+	 */
 	public static function fetch($credentials)
 	{
 		$config = Config::get();
@@ -79,6 +93,8 @@ class Account
 		return $accounts;
 	}
 
+	/**
+	 */
 	public static function all()
 	{
 		$mint_accounts = Config::get()->accounts;

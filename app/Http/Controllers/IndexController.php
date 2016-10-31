@@ -8,7 +8,6 @@ class IndexController extends BaseController
 {
 
 	/**
-	 *
 	 */
 	public function get( $request, $response, $args )
 	{
