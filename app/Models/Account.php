@@ -31,11 +31,24 @@ class Account
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getDueDate()
+	{
+		return isset($this->data['dueDate']) ? $this->data['dueDate'] : '';
+	}
+
+	/**
 	 * @return float
 	 */
 	public function getBalance()
 	{
-		return $this->data['value'];
+		$value = $this->data['value'];
+
+		if (($this->getType() === 'loan' || $this->getType() === 'credit') && $value > 0)
+			return $value * -1;
+
+		return $value;
 	}
 
 	/**
@@ -83,6 +96,10 @@ class Account
 
 		// Decode the accounts
 		$raw_accounts = json_decode($raw_accounts, true);
+
+		// Return empty array if necessary
+		if ( !is_array($raw_accounts) )
+			return [];
 
 		$accounts = [];
 
