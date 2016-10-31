@@ -4,6 +4,7 @@
 <tr>
 {% endif %}
 	<td>{{account.getInstitution}}</td>
+	<td>{{account.getType|capitalize}}</td>
 	<td>{{account.getName}}</td>
 	<td>{{account.getDueDate}}</td>
 	<td class="text-right">{{account.getBalance|number_format(2)}}</td>
