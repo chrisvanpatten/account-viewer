@@ -84,12 +84,12 @@ class Account
 		// Set the path to the accounts cache file
 		$cache = $config->paths->cache . '/accounts-' . md5($credentials->email) . '.json';
 
-		// If the cache is less than one hour old, reuse it
-		if ( file_exists($cache) && filemtime($cache) > (time() - 60 * 60) ) {
+		// If the cache is less than 2.5 hours old, reuse it
+		if ( file_exists($cache) && filemtime($cache) > (time() - 60 * 150) ) {
 			$raw_accounts = file_get_contents($cache);
 		} else {
 			// Otherwise, the cache is stale and should be updated
-			$command = $config->paths->mintapi . ' --accounts ' . $credentials->email . ' "' . $credentials->password . '" --session=' . $credentials->session;
+			$command = $config->paths->mintapi . ' --accounts ' . $credentials->email . ' "' . $credentials->password . '" --session=' . $credentials->session . ' --thx_guid=' . $credentials->guid;
 			$raw_accounts = shell_exec($command);
 			file_put_contents($cache, $raw_accounts, LOCK_EX);
 		}
