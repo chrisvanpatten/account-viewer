@@ -90,8 +90,22 @@ class Account
 		} else {
 			// Otherwise, the cache is stale and should be updated
 			$command = $config->paths->mintapi . ' --accounts ' . $credentials->email . ' "' . $credentials->password . '" --session=' . $credentials->session . ' --thx_guid=' . $credentials->guid;
-			$raw_accounts = shell_exec($command);
-			file_put_contents($cache, $raw_accounts, LOCK_EX);
+
+			// If we are updating in the background...
+			if ( $config->backgroundUpdate === true ) {
+				// Fetch the current cached version
+				$raw_accounts = file_get_contents($cache);
+
+				// Tweak the command so it's suitable for background processing
+				$command .= ' > ' . $cache . ' &';
+
+				// Execute the command
+				shell_exec($command);
+			} else {
+				// Otherwise just run the command and store the contents
+				$raw_accounts = shell_exec($command);
+				file_put_contents($cache, $raw_accounts, LOCK_EX);
+			}
 		}
 
 		// Decode the accounts

@@ -1,4 +1,5 @@
 {
+  "backgroundUpdate": true,
 	"paths": {
     "cache": "/path/to/mintcache/",
     "mintapi": "/path/to/mintapi"
