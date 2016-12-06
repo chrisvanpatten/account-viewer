@@ -11,7 +11,7 @@ class AlexaController extends BaseController
 	 */
 	public function post( $request, $response, $args )
 	{
-		$body    = $request->getBody();
+		$body    = $request->getParsedBody();
 		$keyword = $body['request']['intent']['slots']['Account']['value'];
 
 		// Find the account ID for the given keyword
